@@ -1,0 +1,17 @@
+*.iml
+*.ipr
+*.iws
+.idea
+.svn
+.classpath
+.project
+.settings
+target
+hadoop-hdfs-project/hadoop-hdfs/downloads
+hadoop-hdfs-project/hadoop-hdfs-httpfs/downloads
+*.gv
+*.png
+*~
+*nbactions.xml
+sonar-project.properties
+scripts
