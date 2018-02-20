@@ -2,6 +2,7 @@ package io.hops.experiments;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
@@ -47,10 +48,12 @@ public class Consumer implements Runnable {
 
   void getStats(Operation op) throws IOException {
     String path = null;
-    if (op.paths.length == 2) {
-      path = op.paths[1];
-    } else {
+    if (op.paths.length == 1) {
       path = op.paths[0];
+    } else if(op.paths.length == 1) {
+      path = op.paths[1];
+    } else{
+      System.err.println("Wrong Path. "+ Arrays.toString(op.paths));
     }
 
     FileStatus status = fs.getFileStatus(new Path(path));
