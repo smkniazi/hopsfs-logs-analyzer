@@ -90,7 +90,7 @@ public class Main {
     }
 
     executor.shutdown();
-    if(!executor.isShutdown()){
+    while(!executor.isShutdown()){
       Thread.sleep(2000);
       res.printStats();
     }
