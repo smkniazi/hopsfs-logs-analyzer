@@ -90,7 +90,10 @@ public class Main {
     }
 
     executor.shutdown();
-    executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MINUTES);
+    if(!executor.isShutdown()){
+      Thread.sleep(2000);
+      res.printStats();
+    }
     System.out.println("Done:");
     System.out.println("Results:\n"+ res);
     return;

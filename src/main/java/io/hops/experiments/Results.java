@@ -28,6 +28,10 @@ public class Results {
     count++;
   }
 
+  public synchronized void printStats(){
+    System.out.println(this.toString());
+  }
+
   @Override
   public String toString() {
     boolean header = true;

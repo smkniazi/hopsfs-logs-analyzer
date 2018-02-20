@@ -68,9 +68,8 @@ public class Consumer implements Runnable {
         res.add(op.opNmae, status.getLen(), false);
       }
     } catch (Exception e){
-      System.out.println(e.getMessage());
+//      System.out.println(e.getMessage());
       res.addFailedOp();
-
     }
   }
 
