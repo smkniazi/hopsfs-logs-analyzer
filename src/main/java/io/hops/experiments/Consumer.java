@@ -78,7 +78,7 @@ public class Consumer implements Runnable {
 
   public Configuration getConf() {
     Configuration config = new Configuration();
-    config.set("fs.defaultFS", "hdfs://hadoop28:50071");
+    config.set("fs.defaultFS", "hdfs://hadoop28:8020");
     return config;
   }
 }
