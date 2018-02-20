@@ -39,6 +39,7 @@ public class Consumer implements Runnable {
         Operation op = operations.poll();
         if (op != null) {
           getStats(op);
+//          randData();
         }
       } catch (Exception e) {
         e.printStackTrace();
@@ -79,13 +80,14 @@ public class Consumer implements Runnable {
     String[] ops = {"op1", "op2", "op3"};
 
     String op = ops[rand.nextInt(ops.length)];
-    long size = rand.nextInt(Integer.MAX_VALUE);
+    long size = rand.nextInt(1024*1024);
     boolean isDir = rand.nextInt(2) == 0 ? false : true;
     res.add(op, size, isDir);
   }
 
   public FileSystem getDFSClient() throws IOException {
     return (FileSystem) FileSystem.newInstance(getConf());
+//    return null;
   }
 
   public Configuration getConf() {

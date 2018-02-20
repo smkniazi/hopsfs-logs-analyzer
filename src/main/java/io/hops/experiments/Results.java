@@ -30,9 +30,17 @@ public class Results {
 
   @Override
   public String toString() {
+    boolean header = true;
     String res = "Total Successful Os : "+count+" Failed Ops: "+failedOps+"\n";
     for(String op: map.keySet()){
       Result result = map.get(op);
+
+      if(header){
+        res += String.format("%25s%12s%12s%s", "name", "total", "dirOps",result.getHeader());
+        res+="\n";
+        header = false;
+      }
+
       res += String.format("%25s", op)+result+"\n";
     }
     return res;
@@ -43,23 +51,23 @@ public class Results {
     long dirOps;
     Map<Long, Long> stats = new HashMap<Long, Long>();
     Result(){
-      stats.put(new Long(1024), new Long(0));
-      stats.put(new Long(1024*4), new Long(0));
-      stats.put(new Long(1024*5), new Long(0));
-      stats.put(new Long(1024*6), new Long(0));
-      stats.put(new Long(1024*8), new Long(0));
-      stats.put(new Long(1024*16), new Long(0));
-      stats.put(new Long(1024*32), new Long(0));
-      stats.put(new Long(1024*64), new Long(0));
-      stats.put(new Long(1024*100), new Long(0));
-      stats.put(new Long(1024*512), new Long(0));
-      stats.put(new Long(1024*1024), new Long(0));
-      stats.put(new Long(1024*1024*8), new Long(0));
-      stats.put(new Long(1024*1024*64), new Long(0));
-      stats.put(new Long(1024*1024*256), new Long(0));
-      stats.put(new Long(1024*1024*1024), new Long(0));
-      stats.put(new Long(1024*1024*1024*128), new Long(0));
-      stats.put(new Long(Long.MAX_VALUE), new Long(0));
+      stats.put(new Long((long)1024), new Long(0));
+      stats.put(new Long((long)1024*4), new Long(0));
+      stats.put(new Long((long)1024*5), new Long(0));
+      stats.put(new Long((long)1024*6), new Long(0));
+      stats.put(new Long((long)1024*8), new Long(0));
+      stats.put(new Long((long)1024*16), new Long(0));
+      stats.put(new Long((long)1024*32), new Long(0));
+      stats.put(new Long((long)1024*64), new Long(0));
+      stats.put(new Long((long)1024*100), new Long(0));
+      stats.put(new Long((long)1024*512), new Long(0));
+      stats.put(new Long((long)1024*1024), new Long(0));
+      stats.put(new Long((long)1024*1024*8), new Long(0));
+      stats.put(new Long((long)1024*1024*64), new Long(0));
+      stats.put(new Long((long)1024*1024*256), new Long(0));
+      stats.put(new Long((long)1024*1024*1024), new Long(0));
+      stats.put(new Long((long)1024*1024*1024*128), new Long(0));
+//      stats.put(new Long((long)Long.MAX_VALUE), new Long(0));
     }
 
     public void add(long size, boolean isDir){
@@ -81,16 +89,27 @@ public class Results {
       }
     }
 
-    @Override
-    public String toString() {
+    public String getHeader(){
       String res = "";
       Set<Long> keys = stats.keySet();
       keys = new TreeSet<Long>(keys);
 
-      res += String.format("Total %12d dirOps:%12d stats: ", total, dirOps);
+      for(long key : keys){
+        res  += String.format("%12d",key/1024);
+      }
+
+      return res;
+    }
+
+    @Override
+    public String toString() {
+      String res = "";
+      res += String.format("%12d%12d", total, dirOps);
+      Set<Long> keys = stats.keySet();
+      keys = new TreeSet<Long>(keys);
       for(long key : keys){
         long val = stats.get(key);
-        res  += String.format("%10d",val);
+        res  += String.format("%12d",val);
       }
       return  res;
     }
