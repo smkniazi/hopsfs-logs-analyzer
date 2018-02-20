@@ -33,7 +33,7 @@ public class Results {
     String res = "Total Successful Os : "+count+" Failed Ops: "+failedOps+"\n";
     for(String op: map.keySet()){
       Result result = map.get(op);
-      res += op+"\t\t\t"+result+"\n";
+      res += String.format("%25s", op)+result+"\n";
     }
     return res;
   }
