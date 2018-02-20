@@ -13,8 +13,15 @@ public class Results {
   }
 
 
-  public synchronized  void addFailedOp(){
+  public synchronized  void addFailedOp(String op){
     failedOps++;
+    Result res = map.get(op);
+
+    if(res == null){
+      res = new Result();
+      map.put(op, res);
+    }
+    res.addFailedOp();
   }
   public synchronized  void add(String op, long size, boolean isDir){
     Result res = map.get(op);
@@ -24,7 +31,7 @@ public class Results {
       map.put(op, res);
     }
 
-    res.add(size, isDir);
+    res.addSuccOp(size, isDir);
     count++;
   }
 
@@ -40,7 +47,8 @@ public class Results {
       Result result = map.get(op);
 
       if(header){
-        res += String.format("%25s%12s%12s%s", "name", "total", "dirOps",result.getHeader());
+        res += String.format("%25s%12s%12s%12s%s", "name", "succOps", "failedOps", "dirOps",result
+                .getHeader());
         res+="\n";
         header = false;
       }
@@ -51,7 +59,8 @@ public class Results {
   }
 
   class Result{
-    long total;
+    long succOps;
+    long failedOps;
     long dirOps;
     Map<Long, Long> stats = new HashMap<Long, Long>();
     Result(){
@@ -74,8 +83,13 @@ public class Results {
 //      stats.put(new Long((long)Long.MAX_VALUE), new Long(0));
     }
 
-    public void add(long size, boolean isDir){
-      total++;
+
+    public void addFailedOp(){
+      failedOps++;
+    }
+
+    public void addSuccOp(long size, boolean isDir){
+      succOps++;
       if(isDir){
         dirOps++;
         return;
@@ -108,7 +122,7 @@ public class Results {
     @Override
     public String toString() {
       String res = "";
-      res += String.format("%12d%12d", total, dirOps);
+      res += String.format("%12d%12d%12d", succOps, failedOps, dirOps);
       Set<Long> keys = stats.keySet();
       keys = new TreeSet<Long>(keys);
       for(long key : keys){
