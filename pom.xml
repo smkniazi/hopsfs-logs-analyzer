@@ -130,9 +130,9 @@
             <descriptorRef>jar-with-dependencies</descriptorRef>
           </descriptorRefs>
           <archive>
-            <!--manifest>
-              <mainClass>se.sics.hop.experiments.BenchMark</mainClass>
-            </manifest-->
+            <manifest>
+              <mainClass>io.hops.experiments.Main</mainClass>
+            </manifest>
           </archive>
         </configuration>
         <executions>

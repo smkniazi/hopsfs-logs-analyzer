@@ -29,7 +29,7 @@ public class Main {
   ConcurrentLinkedQueue<Operation> operations = new ConcurrentLinkedQueue<Operation>();
 
 
-  public static void main(String argv[]) throws InterruptedException {
+  public static void main(String argv[]) throws InterruptedException, IOException {
     (new Main()).start(argv);
     System.exit(0);
   }
@@ -77,7 +77,7 @@ public class Main {
     return allResultFiles;
   }
 
-  public void start(String argv[]) throws InterruptedException {
+  public void start(String argv[]) throws InterruptedException, IOException {
     parseArgs(argv);
     AtomicBoolean done = new AtomicBoolean(false);
     Results res = new Results();
