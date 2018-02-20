@@ -37,7 +37,7 @@ public class Consumer implements Runnable {
 
         Operation op = operations.poll();
         if (op != null) {
-          randData();
+          getStats(op);
         }
       } catch (Exception e) {
         e.printStackTrace();
