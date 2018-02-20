@@ -7,13 +7,16 @@ public class Results {
 
   ConcurrentHashMap<String, Result> map = new ConcurrentHashMap<String, Result>();
   long count = 0;
+  long failedOps = 0;
 
   public Results(){
   }
 
 
+  public synchronized  void addFailedOp(){
+    failedOps++;
+  }
   public synchronized  void add(String op, long size, boolean isDir){
-
     Result res = map.get(op);
 
     if(res == null){
@@ -27,7 +30,7 @@ public class Results {
 
   @Override
   public String toString() {
-    String res = "Total Operatons : "+count+"\n";
+    String res = "Total Successful Os : "+count+" Failed Ops: "+failedOps+"\n";
     for(String op: map.keySet()){
       Result result = map.get(op);
       res += op+"\t\t\t"+result+"\n";

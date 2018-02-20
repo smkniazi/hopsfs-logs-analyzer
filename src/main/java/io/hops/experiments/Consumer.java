@@ -59,13 +59,17 @@ public class Consumer implements Runnable {
       System.err.println("Wrong Path. "+ Arrays.toString(op.paths));
     }
 
+    try {
+      FileStatus status = fs.getFileStatus(new Path(path));
+      if (status.isDirectory()) {
+        res.add(op.opNmae, -1, true);
+      } else {
+        res.add(op.opNmae, status.getLen(), false);
+      }
+    } catch (Exception e){
+      System.out.println(e.getMessage());
+      res.
 
-
-    FileStatus status = fs.getFileStatus(new Path(path));
-    if (status.isDirectory()) {
-      res.add(op.opNmae, -1, true);
-    } else {
-      res.add(op.opNmae, status.getLen(), false);
     }
   }
 
