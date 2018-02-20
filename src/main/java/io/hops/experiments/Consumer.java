@@ -48,13 +48,18 @@ public class Consumer implements Runnable {
 
   void getStats(Operation op) throws IOException {
     String path = null;
-    if (op.paths.length == 1) {
-      path = op.paths[0];
-    } else if(op.paths.length == 1) {
+
+    if(op.paths[1] != null){
       path = op.paths[1];
-    } else{
+    }else{
+      path = op.paths[0];
+    }
+
+    if(path == null){
       System.err.println("Wrong Path. "+ Arrays.toString(op.paths));
     }
+
+
 
     FileStatus status = fs.getFileStatus(new Path(path));
     if (status.isDirectory()) {
