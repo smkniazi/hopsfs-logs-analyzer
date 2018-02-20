@@ -5,9 +5,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Results {
 
-  ConcurrentHashMap<String, Result> map = new ConcurrentHashMap<String, Result>();
-  long count = 0;
-  long failedOps = 0;
+  private ConcurrentHashMap<String, Result> map = new ConcurrentHashMap<String, Result>();
+  private long count = 0;
+  private  long failedOps = 0;
 
   public Results(){
   }
