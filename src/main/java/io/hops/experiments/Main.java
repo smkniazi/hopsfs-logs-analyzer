@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -15,12 +20,18 @@ public class Main {
   @Option(name = "-path", usage = "Location of log files")
   private static String path = "/home/salman/logs" ;
 
+  @Option(name = "-numThreads", usage = "Num Threads")
+  private static int numThreads = 1;
+
+  protected ExecutorService executor;
+
   private static ThreadLocal<FileSystem> dfsClients = new ThreadLocal<FileSystem>();
   ConcurrentLinkedQueue<Operation> operations = new ConcurrentLinkedQueue<Operation>();
 
 
   public static void main(String argv[]) throws InterruptedException {
     (new Main()).start(argv);
+    System.exit(0);
   }
 
   private void parseArgs(String[] args) {
@@ -68,24 +79,24 @@ public class Main {
 
   public void start(String argv[]) throws InterruptedException {
     parseArgs(argv);
-    Producer prod = new Producer(findFiles(path));
-    Thread t = new Thread(prod);
-    t.start();
-    t.join();
+    AtomicBoolean done = new AtomicBoolean(false);
+    Results res = new Results();
+    executor = Executors.newFixedThreadPool(numThreads+1);
+    Producer prod = Producer.ProducerFactory(findFiles(path), operations, done);
+    executor.submit(prod);
+
+    for(int i = 0 ; i < numThreads; i++){
+      executor.submit(new Consumer(operations, done,res)) ;
+    }
+
+    executor.shutdown();
+    executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MINUTES);
+    System.out.println("Done:");
+    System.out.println("Results:\n"+ res);
     return;
   }
 
 
-  public static FileSystem getDFSClient(Configuration conf) throws IOException {
-    FileSystem client = dfsClients.get();
-    if (client == null) {
-      client = (FileSystem) FileSystem.newInstance(conf);
-      dfsClients.set(client);
-    }else{
-      System.out.println("Reusing Existing Client "+client);
-    }
-    return client;
-  }
 }
 
 
